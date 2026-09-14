@@ -1,0 +1,37 @@
+# ------------------------------------------------------------------------------
+# 1. SEGURIDAD Y CONFIGURACIÓN BÁSICA
+# ------------------------------------------------------------------------------
+
+# Ocultar la navegación de directorios (evita ver la lista de archivos si no hay index)
+Options -Indexes
+
+# Establecer la codificación por defecto
+AddDefaultCharset UTF-8
+
+# Protege la lectura directa del propio archivo .htaccess
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+
+# ------------------------------------------------------------------------------
+# 2. MOTOR DE REESCRITURA (REWRITE ENGINE)
+# ------------------------------------------------------------------------------
+
+# Activar el módulo mod_rewrite de Apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Definir la ruta base del proyecto
+    RewriteBase /mobu-flash/
+
+    # REGLA 1: Excepciones para archivos existentes (CSS, JS, imágenes, etc.)
+    # Si la petición coincide con un archivo o directorio real, no redirigir
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # REGLA 2: Redirección al Front Controller
+    # Captura cualquier URL y la envía a public/index.php como parámetro
+    RewriteRule ^(.*)$ public/index.php?url=$1 [QSA,L]
+</IfModule>
