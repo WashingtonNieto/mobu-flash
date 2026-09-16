@@ -1,4 +1,10 @@
 <?php
+
+
+// se hace la modificacion del index de 
+// forma temporal
+
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
